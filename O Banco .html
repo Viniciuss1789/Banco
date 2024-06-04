@@ -3,89 +3,105 @@
 <head>
 
 	<script>
-		var saldo = 100.5; //Float
+		let nomeUsuario = prompt("Digite seu nome:");//Nome do usuario
+		alert(`Olá ${nomeUsuario}, é um prazer ter você por aqui!`);
+
+		let saldo = 1500;
+		let senha = '2004';
+
 		function inicio() {
-            var nomeUsuario = prompt("Qual é o seu nome")
-            alert(`Olá ${nomeUsuario} é um prazer conhecer você`)
+			let opcao = parseInt(prompt(`\nEscolha uma opção:
+    1. Saldo
+    2. Extrato
+    3. Saque
+    4. Depósito
+    5. Transferência
+    6. Sair`));
 
-			var escolha = parseInt(prompt(`
-            Selecione uma opção
-            1.) Saldo
-            2.) Desposito
-            3.) Saque
-            4.) Extrato
-            5.) Sair
-            `));
-           switch (escolha) {
-            case 1:
-                 ver_saldo();
-                 break;
-            case 2:
-                 fazer_deposito();
-                 break;
-            case 3:
-                 fazer_saque();
-                 break;
-            case 4:
-                extrato();
-                break;
-            case 5:
-                sair();    
-            default:
-                erro();
-                break;            
-           }
-		}		
+			switch (opcao) {
+				case 1:
+					saldoUsuario();
+					break;
+				case 2:
+					extratoUsuario();
+					break;
+				case 3:
+					sacar();
+					break;
+				case 4:
+					depositar();
+					break;
+				case 5:
+					transferir();
+					break;
+				case 6:
+					console.log(`\n${nomeUsuario}, foi um prazer ter você por aqui!`);
+					return;
+				default:
+					erro();
+					break;
+			}
 
-		function ver_saldo() {
-			alert('Seu saldo atual é: ' + saldo);
 			inicio();
 		}
 
-		function fazer_deposito() {
-			var deposito = parseFloat(prompt('Qual o valor para depósito?'));
-			// Not a Number
-			if (isNaN(deposito) || deposito === '') {
-				alert('Por favor, informe um número:');
-				fazer_deposito();
+		function saldoUsuario() {
+			let senhaDigitada = prompt("Digite sua senha:");
+			if (senhaDigitada === senha) {
+				alert(`\nSeu saldo é de R$ ${saldo.toFixed(2)}.`);
 			} else {
-				saldo += deposito;
-				ver_saldo();
+				alert("Senha incorreta. Tente novamente.");
+				saldoUsuario();
 			}
 		}
 
-		function fazer_saque() {
-			var saque = parseFloat(prompt('Qual o valor para saque?'));
-			if (isNaN(saque) || saque === '') {
-				alert('Por favor, informe um número:');
-				fazer_saque();
-                return;
-            } if(saque > saldo || saque <= 0){
-                alert("operação não autorizada")
-            
+		function extratoUsuario() {
+			let extrato = ["Depósito de R$ 5000.00", "Saque de R$ 200.00"];
+			alert("\nExtrato:");
+			extrato.forEach(transacao => {
+				alert(transacao);
+			});
+		}
+
+		function sacar() {
+			let valor = parseFloat(prompt("Digite o valor a sacar:"));
+			if (valor <= 0) {
+				alert("Operação não autorizada. Valor inválido.");
+			} else if (valor > saldo) {
+				alert("Operação não autorizada. Saldo insuficiente.");
 			} else {
-				saldo -= saque;
-				
-				ver_saldo();
+				saldo -= valor;
+				alert(`\nSaque de R$ ${valor.toFixed(2)} realizado com sucesso.`);
+			}
+		}
+
+		function depositar() {
+			let valor = parseFloat(prompt("Digite o valor a depositar:"));
+			if (valor <= 0) {
+				alert("Operação não autorizada. Valor inválido.");
+			} else {
+				saldo += valor;
+				alert(`\nDepósito de R$ ${valor.toFixed(2)} realizado com sucesso.`);
+			}
+		}
+
+		function transferir() {
+			let conta = parseInt(prompt("Digite o número da conta para transferência:"));
+			let valor = parseFloat(prompt("Digite o valor a transferir:"));
+			if (valor <= 0) {
+				alert("Operação não autorizada. Valor inválido.");
+			} else if (valor > saldo) {
+				alert("Operação não autorizada. Saldo insuficiente.");
+			} else {
+				saldo -= valor;
+				alert(`\nTransferência de R$ ${valor.toFixed(2)} para a conta ${conta} realizada com sucesso.`);
 			}
 		}
 
 		function erro() {
-			alert('Por favor, informe um número entre 1 e 4');
-			inicio();
+			alert("Opção inválida. Tente novamente.");
 		}
 
-		function sair() {
-			var confirma = confirm('Você deseja sair?');
-			if (confirma) {
-				window.close();
-			} else {
-				inicio();
-			}
-		}
-
-		
-		
 		inicio();
 	</script>
 </head>
